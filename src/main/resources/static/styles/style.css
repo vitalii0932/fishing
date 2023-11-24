@@ -1,0 +1,789 @@
+Body {
+    margin:  0;
+    font-family: 'Montserrat', sans-serif;
+    
+    font-size: 15p;
+    line-height: 1.6;
+    color: #333;
+}
+
+
+
+*, 
+*:before,
+*:after {
+    box-sizing: border-box;
+}
+
+h1, h2, h3, h4, h5, h6{
+    margin: 0;
+}
+
+hr{
+    display: block;
+    width: 100%;
+    height: 1px;
+    margin: 32px 0;
+    
+    border: 0;
+    
+    background-color: #e5e5e5;
+    
+}
+
+
+/*Container*/
+.container {
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+.section{
+    padding: 20px 0;
+}
+
+body {
+    margin: 0; /* Убираем отступы по умолчанию */
+    padding: 0; /* Убираем внутренние отступы по умолчанию */
+}
+
+.header-top {
+    background-color: #333;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px 20px;
+}
+
+.header-logo {
+    display: flex;
+    align-items: center;
+    font-size: 20px;
+}
+
+h1 {
+    margin: 10px;
+}
+
+.search-bar {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    margin: 10px;
+}
+
+.search-bar input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 15px;
+}
+
+.search-bar input::placeholder {
+    color: #777;
+}
+
+.contact-info {
+    display: flex;
+    align-items: center;
+}
+
+.phone-number {
+    margin-right: 20px;
+    margin-left: 10px;
+}
+
+.cart {
+    background-color: transparent;
+    border: 0;
+    background: none;
+    padding: 20px;
+    transition: background-color 0.3s; /* Добавляем плавное изменение цвета фона */
+    position: relative; /* Для позиционирования псевдоэлемента */
+}
+
+.cart i {
+    color: #fff;
+    font-size: 24px;
+    position: relative; /* Устанавливаем позицию относительно .cart */
+}
+
+.cart::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: transparent;
+    border-radius: 50%;
+    transition: background-color 0.3s; /* Добавляем плавное изменение цвета фона псевдоэлемента */
+    pointer-events: none; /* Запрещаем взаимодействие с псевдоэлементом */
+}
+
+.cart:hover::before {
+    background-color: #777; /* Изменяем фон псевдоэлемента при наведении */
+}
+
+.phone-icon {
+    margin-left: 10px;
+}
+
+.login {
+    background-color: transparent;
+    border: 0;
+    background: none;
+    padding: 20px;
+    transition: background-color 0.3s; /* Добавляем плавное изменение цвета фона */
+    position: relative; /* Для позиционирования псевдоэлемента */
+}
+
+.login i {
+    color: #fff;
+    font-size: 24px;
+    position: relative; /* Устанавливаем позицию относительно .cart */
+}
+
+.login::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: transparent;
+    border-radius: 50%;
+    transition: background-color 0.3s; /* Добавляем плавное изменение цвета фона псевдоэлемента */
+    pointer-events: none; /* Запрещаем взаимодействие с псевдоэлементом */
+}
+
+.login:hover::before {
+    background-color: #777; /* Изменяем фон псевдоэлемента при наведении */
+}
+
+.main-nav {
+    background-color: #404040; /* Цвет фона навигационного меню */
+    padding: 10px 0; /* Верхний и нижний отступы */
+}
+
+.main-nav ul {
+    list-style-type: none;
+    display: flex;
+    justify-content: space-around; /* Равномерное распределение пунктов меню */
+}
+
+.main-nav ul li {
+    margin-right: 20px;
+    position: relative; /* Для позиционирования border */
+}
+
+.main-nav ul li a {
+    text-decoration: none;
+    color: #fff;
+    font-weight: bold;
+    padding: 15px 30px; /* Отступы для каждого пункта меню */
+}
+
+.main-nav ul li a:hover {
+    background-color: #666; /* Цвет фона при наведении */
+    color: #fff; /* Цвет текста при наведении */
+    border-radius: 5px; /* Создание скругленных углов для фона при наведении */
+}
+
+.main-nav ul li::after {
+    content: "";
+    position: absolute;
+    top: 100%; /* Поднимаемся ниже текста пункта */
+    left: 0;
+    width: 100%; /* Ширина равна ширине пункта */
+    height: 3px; /* Толщина border */
+    background-color: #666; /* Цвет border */
+    transform: scaleX(0); /* Изначально border невидим */
+    transform-origin: left;
+    transition: transform 0.3s; /* Добавляем анимацию для border */
+}
+
+.main-nav ul li:hover::after {
+    transform: scaleX(1); /* При наведении показываем border */
+}
+
+.intro {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    height: 100vh;
+    min-height: 820px;
+    position: relative;
+    
+    background: url("/images/intro.jpg") center no-repeat;
+    -webkit-background-size: cover;
+    background-size: cover;
+}
+
+.intro__inner{
+    width: 100%;
+    max-width: 1000px;
+    
+    margin: 0 auto;
+    text-align: center;
+}
+
+.intro-logo{
+    font-size: 50px;
+    font-weight: 700;
+    text-transform: uppercase;
+    line-height: 1;
+    color: #fff; 
+}
+
+.intro__title:after{
+    content: "";
+    display: block;
+    width: 60px;
+    height: 3px;
+    margin: 60px auto;
+    
+    background-color: #fff;
+}
+
+.intro__suptitle{
+    margin-bottom: 18px;
+    font-size: 62px;
+    font-weight: 100;
+    font-family: 'Kaushan Script', cursive;
+    color: #fff;
+    text-align: center;
+}
+
+.advertising {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); /* Создает пять одинаковых ячеек */
+    width: 100%; /* Чтобы контейнер занимал всю ширину экрана */
+}
+
+.advertising-item {
+    text-align: center;
+    width: 100%;
+}
+
+
+.button{
+    margin-top: 60px;
+    background-color: Transparent;
+    background-repeat:no-repeat;
+    border: none;
+    cursor: pointer;
+    overflow: hidden;
+    
+    display: inline-block;
+    vertical-align: top;
+    padding: 8px 25px;
+    
+    border: 4px solid #fff;
+    border-radius: 7px;
+    
+    font-size: 20px;
+    font-weight: 700;
+    color: #fff;
+    text-transform: uppercase;
+    text-decoration: none;
+    
+    transition: background 0.1s linear, color 0.1s linear;
+
+}
+
+.button:hover{
+    background-color: #fff;
+    color: #333;
+}
+
+.product-buttons {
+    display: flex;
+    justify-content: left;
+    border-bottom: 1px solid #ccc;
+}
+
+.product-button {
+    display: block;
+    background-color: transparent;
+    margin-left: 40px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+    width: 15%;
+    text-align: center; /* Выравнивание текста по левому краю */
+    text-decoration: none; /* Убираем стандартное подчеркивание ссылок */
+    font-family: 'Montserrat', cursive;
+}
+
+/* Стили для нажатой кнопки (с подчеркиванием) */
+.product-button.active {
+    border-bottom: 2px solid #878787;
+}
+
+.product-button:hover {
+    background-color: #d3d3d3; /* Цвет фона при наведении */
+}
+
+.product-discount {
+    display: block;
+}
+
+.product-hits {
+    display: none;
+}
+
+.container__shop {
+    width: 90%;
+    margin: 10px auto;
+    padding: 0 15px;
+}
+
+.about {
+    display: flex; /* Элементы будут располагаться горизонтально */
+    justify-content: left; /* Равномерное распределение элементов по горизонтали */
+    flex-wrap: wrap;
+}
+
+.about__img {
+    position: relative;
+}
+
+.item {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    width: 19%;
+    border: 1px solid #ccc;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    margin: 5px;
+}
+
+.item:hover {
+    border: 1px solid #a9a9a9;
+}
+
+.card__prof {
+    position: relative;
+    right: 90px;
+    top: 30px;
+    font-size: 23px;
+}
+
+.card__name {
+    font-size: 23px;
+}
+
+.card__text {
+    font-size: 18px;
+    color: #ccc;
+    font-family: cursive;
+}
+
+.old-price {
+    text-decoration: line-through;
+}
+
+.buy-button {
+    position: relative;
+    left: 185px;
+    top: -10px;
+    padding: 5px 10px;
+    background-color: #ff0;
+    width: 60px;
+    border-radius: 10px;
+}
+
+.buy-button button {
+    border: none;
+    cursor: pointer;
+    background-color: #ff0;
+    font-size: 25px;
+    color: #000;
+}
+
+.statistics{
+    background-color: #1e2b8a;
+}
+
+.stat{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.stat__item{
+    flex: 1 1 0;
+    padding: 70px 25px;
+    
+    border-left: 1px solid #636aa4;
+    
+    text-align: center;
+    color: #fff;
+}
+
+.stat__item:last-child {
+    border-right: 1px solid #636aa4;
+}
+
+.stat__number{
+    margin-bottom: 10px;
+    font-size: 72px;
+    font-weight: 700; 
+    line-height: 1;
+}
+
+.stat__text{
+    font-size: 14px;
+    text-transform: uppercase;
+}
+
+.image-text-block {
+    display: flex;
+    align-items: center;
+    border: 2px solid #1e2b8a;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.swiper {
+    margin-top: 70px;
+    width: 1500px;
+    height: 50%;
+    max-height: 300px;
+}
+
+.swiper-slide {
+    padding: 0 200px;
+    text-align: center;
+    font-size: 18px;
+    background-color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.swiper-slide img{
+    width: 15%;
+    object-fit: cover;
+}
+
+.swiper-button-next, .swiper-rtl .swiper-button-prev{
+    right: 10px !important; 
+    left: auto;
+}
+.swiper-button-prev, .swiper-rtl .swiper-button-next{
+    left: 10px !important; 
+    right: auto;
+}
+
+.map {
+    width: 100%;
+    height: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+footer {
+    height: 70px;
+    background-color: #333;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px 20px;
+}
+
+.end {
+    padding: 0 200px;
+    display: flex;
+    align-items: center;
+    color: #ccc;
+}
+
+.copyright {
+    font-size: 14px;
+}
+
+.social-networks {
+    padding: 0 100px;
+    font-size: 30px;
+}
+
+.social-networks i{
+    padding: 10px;
+    margin-right: 10px;
+}
+
+.social-networks i:last-child{
+    margin: 0;
+}
+
+.social-networks i:hover {
+    background-color: #fff;
+    color: #333;
+    border-radius: 15px;
+}
+
+.send {
+    margin-left: 100px;
+}
+
+.send_a{
+    position: relative;
+    
+    display: inline-block;
+    vertical-align: top;
+    margin: 0 18px;
+   
+    
+    color: #ccc;
+    text-decoration: none;
+    font-family: 'Montserrat', sans-serif;
+        
+    transition: color 0.1s linear;
+}
+
+.send_a:after{
+    content: "";
+    display: block;
+    width: 100%;
+    height: 3px;
+    
+    background-color: #fff; 
+    opacity: 0;
+    
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1;
+    
+    transition: opacity 0.1s;
+}
+
+.send_a:hover{
+    color: #fff; 
+}
+
+.send_a:hover:after{
+    opacity: 1;
+}
+
+.shop {
+    padding: 30px 70px;
+}
+
+.shop__btns {
+    margin: 0;
+    display: block;
+    padding-top: 10px;
+}
+
+.shop__btns .send{
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #ff0;
+    cursor: pointer;
+    margin: 0;
+    padding-left: 0;
+    float: left;
+    width: 150px;
+    height: 40px;
+    font-size: 20px;
+}
+
+.shop__btns .send:hover{
+    border: 1px solid #828282;
+}
+
+.shop__btns .delete{
+    cursor: pointer;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 20px;
+    margin-left: 10px;
+    float: left;
+    height: 40px;
+    width: 40px;
+}
+
+.shop__btns .delete:hover{
+    border: 1px solid #ccc;
+    background-color: #ccc;
+}
+
+.dropbtn {
+    font-size: 18px;
+    text-align: left;
+    width: 300px;
+    background-color: #a3a3a3;
+    color: #fff;
+    padding: 10px;
+    margin-top: 10px;
+    border: none;
+    cursor: pointer;
+}
+
+.dropbtn:hover {
+    background-color: #828282;
+}
+
+/* Стилизация выпадающего контейнера */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+
+    background-color: #a3a3a3;
+    width: 100%;
+    z-index: 1;
+    border: 1px solid #828282;
+    padding: 10px;
+}
+
+.dropdown-content label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+/* Отображение контейнера при наведении на кнопку */
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.sidebar {
+    margin-top: 30px;
+    width: 20%;
+    height: 100%;
+    float: left;
+    padding: 20px;
+    background-color: #f2f2f2;
+}
+
+/* Стили для основной части */
+.main-content {
+    margin-top: 30px;
+    border: 1px solid #ccc;
+    width: 80%;
+    float: left;
+    padding: 20px;
+}
+
+.product {
+    display: block;
+}
+
+.main__shop {
+    width: 100%;
+    margin: 10px auto;
+    padding: 0 15px;
+}
+
+.about__shop {
+    display: flex; /* Элементы будут располагаться горизонтально */
+    justify-content: left; /* Равномерное распределение элементов по горизонтали */
+    flex-wrap: wrap;
+}
+
+.about__img__shop {
+    position: relative;
+}
+
+.item__shop {
+    padding: 10px;
+    width: 19%;
+    border: 1px solid #ccc;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    margin: 5px;
+}
+
+.item:hover {
+    border: 1px solid #a9a9a9;
+}
+
+.card__prof__shop {
+    position: relative;
+    right: 60px;
+    top: 30px;
+    font-size: 23px;
+}
+
+.card__name__shop {
+    font-size: 23px;
+}
+
+.card__text__shop {
+    font-size: 18px;
+    color: #ccc;
+    font-family: cursive;
+}
+
+.buy-button__shop {
+    position: relative;
+    left: 155px;
+    top: -10px;
+    padding: 5px 10px;
+    background-color: #ff0;
+    width: 60px;
+    border-radius: 10px;
+}
+
+.buy-button__shop button {
+    border: none;
+    cursor: pointer;
+    background-color: #ff0;
+    font-size: 25px;
+    color: #000;
+}
+
+.dropbtn a {
+    text-decoration: none; /* Убираем подчеркивание */
+    color: inherit; /* Используем цвет текста родительского элемента */
+    outline: none; /* Убираем выделение при фокусировке */
+}
+
+.dropbtn a:hover {
+    text-decoration: none; /* Убираем подчеркивание при наведении */
+}
+
+.header-top a {
+    text-decoration: none; /* Убираем подчеркивание */
+    color: inherit; /* Используем цвет текста родительского элемента */
+    outline: none; /* Убираем выделение при фокусировке */
+}
+
+.header-top a:hover {
+    text-decoration: none;
+}
+
+.search-button i {
+    font-size: 20px; /* Устанавливает размер значка */
+    color: #fff;
+    padding-left: 20px;
+    padding-right: 10px;
+    cursor: pointer;
+}
+
+.search-button {
+    background-color: transparent; /* Прозрачный фон */
+    border: none; /* Убираем границы кнопки */
+    padding: 0; /* Убираем внутренний отступ */
+    cursor: pointer; /* Задаем курсор указателя при наведении */
+}
+
+
