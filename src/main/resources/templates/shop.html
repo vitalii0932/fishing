@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/styles/style.css}">
+    <script src="https://kit.fontawesome.com/c93819fc22.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,500,600,700&display=swap">
+    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+
+    <title>Shop</title>
+</head>
+<body>
+
+<header th:insert="blocks/header :: header"></header>
+
+<div class="shop">
+    <div class="sidebar">
+
+        <p style="font-size: 25px; padding: 0; margin: 0;" th:text="${categoryName}"></p>
+        <div th:each="el : ${types}">
+            <div class="dropdown">
+                <a th:href="@{'/index/shop/type/' + ${el.getId()}}">
+                    <button th:text="${el.name}" class="dropbtn"></button>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="product" id="product">
+            <div class="main__shop">
+                <div class="about__shop">
+                    <div class="item__shop"  th:each="el : ${products}">
+                        <div class="item__inner__shop">
+                            <div class="about__img__shop">
+                                <img th:src="@{'/images/products/' + ${el.imagePath}}" alt="">
+                            </div>
+                            <div class="card__shop__shop">
+                                <div th:text="${el.name}" class="card__name__shop"></div>
+                                <div th:text="${el.discount}" class="card__prof__shop"></div>
+                            </div>
+                            <div class="buy-button__shop">
+                                <a>
+                                    <button onclick="buyProduct(this)" th:data-id="${el.getId()}"><i class="fas fa-shopping-cart"></i></button>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="container">
+    <div class="map">
+        <h1>Де ми знаходимось</h1>
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d9932.067281276908!2d31.239500883809225!3d51.51290740659201!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x46d546312ad821af%3A0xe26fdc878e862a0c!2z0JrQvtGB0YLRgNC-0LzRgdC60LDRjyDRg9C7LiwgMTIwLCDQp9C10YDQvdC40LPQvtCyLCDQp9C10YDQvdC40LPQvtCy0YHQutCw0Y8g0L7QsdC70LDRgdGC0YwsIDE0MDM5!5e0!3m2!1sru!2sua!4v1697907683384!5m2!1sru!2sua" width="100%" height="200px" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+</div>
+
+<footer th:insert="blocks/footer :: footer"></footer>
+
+<script src="script.js"></script>
+<script>
+    function buyProduct(button) {
+        var productId = button.getAttribute('data-id');
+
+        // Выполнение AJAX-запроса после нажатия кнопки
+        fetch('/index/shop/buy/' + productId, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json', // Установите заголовок, если это необходимо
+                // Другие заголовки могут быть добавлены здесь
+            },
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json(); // Или response.text(), в зависимости от того, какой формат вы ожидаете
+            })
+            .then(data => {
+                console.log('Запрос успешно выполнен', data);
+                alert(data);
+                // Дополнительные действия после успешного запроса
+            })
+            .catch(error => {
+                console.error('Произошла ошибка при выполнении запроса', error);
+            });
+    }
+</script>
+
+</body>
+</html>
