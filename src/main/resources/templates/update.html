@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${title}"></title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            display: flex;
+        }
+
+        .menu {
+            width: 10%;
+            background-color: #484848;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .content {
+            width: 100%;
+            padding: 20px;
+        }
+
+        .button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            background-color: #303030;
+            border: none;
+            border-radius: 3px;
+            color: #fff;
+            font-size: 16px;
+        }
+
+        .button:hover {
+            background-color: #181818;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        /* Стиль для рядків таблиці при наведенні миші */
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+
+        .edit-button {
+            display: inline-block;
+            padding: 8px 16px;
+            font-size: 14px;
+            cursor: pointer;
+            background-color: #4CAF50; /* Зелений колір */
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            text-align: center;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+        .edit-button:hover {
+            background-color: #45a049; /* Зелений колір при наведенні */
+        }
+
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 16px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #4caf50;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        header {
+            text-align: center;
+            background-color: #484848;
+            padding: 20px;
+            color: white;
+        }
+
+        header a {
+            color: white;
+            text-decoration: none;
+        }
+
+        header a:hover {
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <a th:href="@{'/admin/'}">Назад</a>
+</header>
+
+<div class="container">
+    <div class="content">
+        <form id="myForm" method="post" th:action="@{'/admin/update'}">
+            <label for="id">id</label>
+            <input type="text" id="id" name="id" th:value="${product.id}"/>
+
+            <label for="name">name</label>
+            <input type="text" id="name" name="name" th:value="${product.name}"/>
+
+            <label for="imagePath">image path</label>
+            <input type="text" id="imagePath" name="imagePath" th:value="${product.imagePath}"/>
+
+            <label for="typeId">type id</label>
+            <input type="text" id="typeId" name="typeId" th:value="${product.type.id}"/>
+
+            <label for="price">price</label>
+            <input type="text" id="price" name="price" th:value="${product.price}"/>
+
+            <label for="discount">discount</label>
+            <input type="text" id="discount" name="discount" th:value="${product.discount}"/>
+
+            <label for="count">count</label>
+            <input type="text" id="count" name="count" th:value="${product.count}"/>
+
+            <label for="totalSales">total sales</label>
+            <input type="text" id="totalSales" name="totalSales" th:value="${product.totalSales}"/>
+
+            <button type="submitForm" onclick="submitForm()">Надіслати</button>
+        </form>
+    </div>
+</div>
+
+
+</body>
+</html>
