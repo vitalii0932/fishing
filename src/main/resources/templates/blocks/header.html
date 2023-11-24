@@ -1,0 +1,60 @@
+<div th:fragment="header">
+    <header>
+        <div class="header-top">
+            <a th:href="@{'/index'}">
+                <div class="header-logo">
+                    <i class="fa-solid fa-fish-fins icon"></i>
+                    <h1>Fishing</h1>
+                </div>
+            </a>
+
+            <form class="search-bar" action="#" method="get" onsubmit="sendSearchRequest(event)">
+                <input class="search-input" type="text" name="search" placeholder="Пошук за іменем товару">
+                <button class="search-button" type="submit">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+            </form>
+
+            <div class="contact-info">
+                <div class="phone-icon">
+                    <i class="fa-solid fa-phone"></i>
+                </div>
+                <span class="phone-number">+38(095)-885-36-86</span>
+                <a th:href="@{'/index/shoppingCart'}">
+                    <button class="cart">
+                        <i class="fas fa-shopping-cart"></i>
+                    </button>
+                </a>
+                <a th:href="@{'/index/user/'}">
+                    <button class="login">
+                        <i class="fa-solid fa-user"></i>
+                    </button>
+                </a>
+            </div>
+        </div>
+
+        <script>
+            function sendSearchRequest(event) {
+                event.preventDefault(); // Зупинити звичайну відправку форми
+
+                // Отримати значення введення
+                const searchInput = document.querySelector('.search-input');
+                const searchTerm = searchInput.value;
+                window.location.href = `/index/shop/byName/${encodeURIComponent(searchTerm)}`;
+            }
+        </script>
+
+    </header>
+
+    <nav class="main-nav">
+        <ul>
+            <li><a th:href="@{'/index/shop/1'}">Вудилища</a></li>
+            <li><a th:href="@{'/index/shop/2'}">Катушки</a></li>
+            <li><a th:href="@{'/index/shop/3'}">Приманки</a></li>
+            <li><a th:href="@{'/index/shop/4'}">Шнури</a></li>
+            <li><a th:href="@{'/index/shop/5'}">Прикормки</a></li>
+            <li><a th:href="@{'/index/shop/6'}">Човни</a></li>
+        </ul>
+    </nav>
+</div>
+
