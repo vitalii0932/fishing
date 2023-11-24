@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Data Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: #333;
+            color: white;
+            padding: 15px;
+            text-align: center;
+        }
+
+        main {
+            margin: 20px;
+        }
+
+        h2 {
+            color: #333;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        a {
+            color: white;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <a th:href="@{/index}">Home</a>
+</header>
+
+<main>
+    <h2>Дані про користувача</h2>
+
+    <p>Ім'я: <span th:text="${name}"></span></p>
+        <p>Email: <span th:text="${email}"></span></p>
+        <p>Номер телефону: <span th:text="${phoneNumber}"></span></p>
+
+    </div>
+
+    <h2>User Orders</h2>
+
+    <!-- Orders Table -->
+    <table>
+        <thead>
+        <tr>
+            <th>Order ID</th>
+            <th>Products</th>
+            <th>Status</th>
+            <th>Total Price</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="el : ${products}">
+            <td th:text="${el.getId()}"></td>
+            <td th:text="${el.getProducts()}"></td>
+            <td th:text="${el.getStatus()}"></td>
+            <td th:text="${el.getTotalPrice()}"></td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+
+</body>
+</html>
