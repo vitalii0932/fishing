@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/styles/style.css}">
+    <script src="https://kit.fontawesome.com/c93819fc22.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,500,600,700&display=swap">
+    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+    <title>Корзина</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: #333;
+            padding: 10px;
+            color: white;
+            text-align: center;
+        }
+
+        main {
+            flex: 1;
+            padding: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        td button {
+            background-color: #f44336;
+            color: white;
+            padding: 8px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .purchase-btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+        }
+
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px;
+        }
+
+        a {
+            text-decoration: none; /* Убираем подчеркивание */
+            color: inherit; /* Используем цвет текста родительского элемента */
+            outline: none; /* Убираем выделение при фокусировке */
+        }
+
+        a:hover {
+            text-decoration: none; /* Убираем подчеркивание при наведении */
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-top">
+        <a th:href="@{'/index'}">
+            <div class="header-logo">
+                <i class="fa-solid fa-fish-fins icon"></i>
+                <h1>Fishing</h1>
+            </div>
+        </a>
+    </div>
+
+</header>
+
+<main>
+    <table>
+
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Товар</th>
+            <th>Категорія</th>
+            <th>Ціна</th>
+            <th>Дії</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="el : ${products}">
+            <td th:text="${el.getId()}"></td>
+            <td th:text="${el.getName()}"></td>
+            <td th:text="${el.getType().getName()}"></td>
+            <td th:text="${el.getPrice()}"></td>
+            <td>
+                <a>
+                    <button onclick="deleteProduct(this)" th:data-id="${el.getId()}">Видалити</button>
+                </a>
+            </td>
+        </tr>
+
+        </tbody>
+    </table>
+
+    <p>Загальна ціна: <span th:text="${totalPrice}"></span></p>
+
+    <button onclick="buy()" class="purchase-btn">Здійснити покупку</button>
+</main>
+
+<script>
+    function deleteProduct(button) {
+        var productId = button.getAttribute('data-id');
+
+        // Выполнение AJAX-запроса после нажатия кнопки
+        fetch('/index/shoppingCart/deleteProduct/' + productId, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json', // Установите заголовок, если это необходимо
+                // Другие заголовки могут быть добавлены здесь
+            },
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json(); // Или response.text(), в зависимости от того, какой формат вы ожидаете
+            })
+            .then(data => {
+                console.log('Запрос успешно выполнен', data);
+                alert(data);
+                // Дополнительные действия после успешного запроса
+            })
+            .catch(error => {
+                console.error('Произошла ошибка при выполнении запроса', error);
+            });
+
+        setTimeout(() => {
+            window.location.href = `/index/shoppingCart`;
+        }, 500);
+    }
+</script>
+
+<script>
+    function buy() {
+
+        window.location.href = '/index/buy';
+    }
+</script>
+
+</body>
+</html>
