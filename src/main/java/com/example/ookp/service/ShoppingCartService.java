@@ -1,11 +1,12 @@
 package com.example.ookp.service;
 
-import com.example.ookp.dto.ShoppingCartDTO;
+import com.example.ookp.dto.UserDTO;
 import com.example.ookp.mapper.ShoppingCartMapper;
 import com.example.ookp.model.Product;
 import com.example.ookp.model.ShoppingCart;
 import com.example.ookp.repository.ProductRepository;
 import com.example.ookp.repository.ShoppingCartRepository;
+import com.example.ookp.repository.UserRepository;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.retry.annotation.Retryable;
@@ -22,7 +23,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ShoppingCartService {
     private final ShoppingCartRepository shoppingCartRepository;
-    private final ProductRepository productRepository;
+    private final ProductService productService;
+    private final OrderService orderService;
     private final ShoppingCartMapper shoppingCartMapper;
 
     @Transactional(readOnly = true)
@@ -45,67 +47,65 @@ public class ShoppingCartService {
         }
         for(var item : array) {
             int temp = Integer.parseInt(item);
-            result.add(productRepository.findById(temp).get());
+            result.add(productService.findById(temp));
         }
         return result;
     }
 
-    @Transactional(isolation = Isolation.REPEATABLE_READ)
-    @Retryable(maxAttempts = 5)
-    public void addProduct(int productId, int shoppingCartId) {
-        var shoppingCart = shoppingCartRepository.findById(shoppingCartId).get();
-        var price = shoppingCart.getTotalPrice();
-        String stringProducts = shoppingCartRepository.getProducts(shoppingCartId);
-        var array = stringProducts.split(",");
-        int[] arrayProducts = new int[array.length + 1];
-        Product product = productRepository.findById(productId).get();
-        for(int i = 0; i < array.length; i++) {
-            arrayProducts[i] = Integer.parseInt(array[i]);
+    @Transactional(readOnly = true)
+    public List<Product> getProductsByShoppingCart(ShoppingCart shoppingCart) {
+        List<Product> products = new ArrayList<>();
+        if(shoppingCart.getProducts() != null) {
+            for(var item : shoppingCart.getProducts()) {
+                products.add(productService.findById(item));
+            }
         }
-        arrayProducts[array.length] = productId;
-        price += product.getPrice();
-        shoppingCart.setProducts(arrayProducts);
-        shoppingCart.setTotalPrice(price);
-        shoppingCartRepository.save(shoppingCart);
+        return products;
     }
 
     @Transactional(isolation = Isolation.REPEATABLE_READ)
     @Retryable(maxAttempts = 5)
-    public void deleteProduct(int productId, int shoppingCartId) {
-        System.out.println(productId);
-        var shoppingCart = shoppingCartRepository.findById(shoppingCartId).get();
-        var price = shoppingCart.getTotalPrice();
-
-        String stringProducts = shoppingCartRepository.getProducts(shoppingCartId);
-        var stringArray = stringProducts.split(",");
-        List<Integer> intList = new ArrayList<>();
-        for (var i = 0; i < stringArray.length; i++) {
-            intList.add(Integer.valueOf(stringArray[i]));
+    public ShoppingCart addProduct(int productId, ShoppingCart shoppingCart) {
+        var products = shoppingCart.getProducts();
+        var length = products == null ? 1 : products.length + 1;
+        var cartTotalPrice = shoppingCart.getTotalPrice();
+        int[] newProducts = new int[length];
+        if(products != null) {
+            for(int i = 0; i < products.length; i++) {
+                newProducts[i] = products[i];
+            }
         }
+        newProducts[length - 1] = productId;
+        cartTotalPrice += productService.findById(productId).getDiscount();
+        shoppingCart.setProducts(newProducts);
+        shoppingCart.setTotalPrice(cartTotalPrice);
+        return shoppingCart;
+    }
 
-        int length = intList.size();
-        if(length == 0) {
-            System.out.println("Корзина порожня");
-            return;
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
+    @Retryable(maxAttempts = 5)
+    public ShoppingCart deleteProduct(int productId, ShoppingCart shoppingCart) {
+        if(shoppingCart.getProducts() != null) {
+            var product = productService.findById(productId);
+            var cartTotalPrice = shoppingCart.getTotalPrice();
+            int length = shoppingCart.getProducts().length;
+            if(length == 1) {
+                shoppingCart.setProducts(null);
+                shoppingCart.setTotalPrice(0);
+            }
+            List<Integer> listProducts = new ArrayList<>();
+            for(int i = 0; i < length; i++) {
+                listProducts.add(shoppingCart.getProducts()[i]);
+            }
+            listProducts.remove(listProducts.indexOf(productId));
+            var newProducts = listProducts.stream()
+                                            .mapToInt(Integer::intValue)
+                                            .toArray();
+            cartTotalPrice -= product.getPrice();
+            shoppingCart.setProducts(newProducts);
+            shoppingCart.setTotalPrice(cartTotalPrice);
         }
-        length--;
-
-        Product product = productRepository.findById(productId).get();
-
-        intList.remove(intList.indexOf(productId));
-        int[] products = new int[length];
-        for(int i = 0; i < length; i++) {
-            products[i] = intList.get(i);
-        }
-
-        price -= product.getPrice();
-        price = price < 0 ? 0 : price;
-
-        shoppingCart.setProducts(products);
-        System.out.println("1" + Arrays.toString(products));
-
-        shoppingCart.setTotalPrice(price);
-        shoppingCartRepository.save(shoppingCart);
+        return shoppingCart;
     }
 
     @Transactional(readOnly = true)
@@ -115,18 +115,7 @@ public class ShoppingCartService {
 
     @Transactional(isolation = Isolation.REPEATABLE_READ)
     @Retryable(maxAttempts = 5)
-    public void editStatus(String userName) {
-        var shoppingCart = shoppingCartRepository.getShoppingCartByUserName(userName);
-        if(shoppingCart.getStatus().equals("paid")) {
-            shoppingCart.setStatus("delivered");
-        }
-        shoppingCartRepository.save(shoppingCart);
-    }
-
-    @Transactional(isolation = Isolation.REPEATABLE_READ)
-    @Retryable(maxAttempts = 5)
     public int add(ShoppingCart shoppingCart) {
-        shoppingCart.setStatus("paid");
         return shoppingCartRepository.save(shoppingCart).getId();
     }
 
@@ -136,7 +125,6 @@ public class ShoppingCartService {
         ShoppingCart shoppingCart = new ShoppingCart();
         shoppingCart.setProducts(new int[0]);
         shoppingCart.setTotalPrice(0);
-        shoppingCart.setStatus("created");
         return shoppingCartRepository.save(shoppingCart).getId();
     }
 

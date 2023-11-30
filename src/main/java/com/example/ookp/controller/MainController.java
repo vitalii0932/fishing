@@ -1,24 +1,19 @@
 package com.example.ookp.controller;
 
+import com.example.ookp.dto.ReviewDTO;
 import com.example.ookp.dto.UserDTO;
-import com.example.ookp.mapper.ProductMapper;
 import com.example.ookp.model.Product;
 import com.example.ookp.model.ShoppingCart;
 import com.example.ookp.model.User;
-import com.example.ookp.repository.UserRepository;
 import com.example.ookp.service.*;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -27,12 +22,14 @@ import java.util.List;
 @SessionAttributes(value = {"shoppingCart", "user"})
 @RequiredArgsConstructor
 public class MainController {
-    private final ProductService productService;
-    private final UserService userService;
-    private final ProductMapper productMapper;
     private final ShoppingCartService shoppingCartService;
-    private final TypeService typeService;
+    private final ReviewService reviewService;
     private final CategoryService categoryService;
+    private final ProductService productService;
+    private final OrderService orderService;
+    private final UserService userService;
+    private final TypeService typeService;
+
 
     @ModelAttribute("shoppingCart")
     public ShoppingCart createShoppingCart() {
@@ -46,11 +43,13 @@ public class MainController {
 
     @GetMapping("")
     public String main(Model model, @ModelAttribute("shoppingCart") ShoppingCart shoppingCart) {
-        model.addAttribute("title", "Fishing");
         var discountProducts = productService.findWithDiscount();
-        model.addAttribute("discountProducts", discountProducts);
         var topProducts = productService.findByTopSales(15);
+        var reviews = reviewService.getAll();
+        model.addAttribute("title", "Fishing");
+        model.addAttribute("discountProducts", discountProducts);
         model.addAttribute("topProducts", topProducts);
+        model.addAttribute("reviews", reviews);
         return "index";
     }
 
@@ -86,30 +85,13 @@ public class MainController {
 
     @GetMapping("/shop/buy/{id}")
     public String buyProduct(Model model, @PathVariable int id, @ModelAttribute("shoppingCart") ShoppingCart shoppingCart) {
-        System.out.println("buy");
-        var products = shoppingCart.getProducts();
-        var length = products == null ? 1 : products.length + 1;
-        var price = shoppingCart.getTotalPrice();
-        int[] newProducts = new int[length];
-        if(products != null) {
-            for(int i = 0; i < products.length; i++) {
-                newProducts[i] = products[i];
-            }
-        }
-        newProducts[length - 1] = id;
-        price += productService.findById(id).getDiscount();
-        shoppingCart.setProducts(newProducts);
-        shoppingCart.setTotalPrice(price);
+        shoppingCart = shoppingCartService.addProduct(id, shoppingCart);
         return main(model, shoppingCart);
     }
 
     @GetMapping("/shoppingCart")
     public String shoppingCart(Model model, @ModelAttribute("shoppingCart") ShoppingCart shoppingCart) {
-        System.out.println(shoppingCart);
-        Product[] products = new Product[shoppingCart.getProducts().length];
-        for(int i = 0; i < products.length; i++) {
-            products[i] = productService.findById(shoppingCart.getProducts()[i]);
-        }
+        var products = shoppingCartService.getProductsByShoppingCart(shoppingCart);
         model.addAttribute("products", products);
         model.addAttribute("totalPrice", shoppingCart.getTotalPrice());
         return "cart";
@@ -117,30 +99,7 @@ public class MainController {
 
     @GetMapping("/shoppingCart/deleteProduct/{id}")
     public String deleteProduct(@PathVariable int id, @ModelAttribute("shoppingCart") ShoppingCart shoppingCart) {
-        if(shoppingCart.getProducts() == null) {
-            return "cart";
-        }
-        var product = productService.findById(id);
-        var price = shoppingCart.getTotalPrice();
-        int length = 0;
-        if(shoppingCart.getProducts().length == 1) {
-            shoppingCart.setProducts(null);
-            shoppingCart.setTotalPrice(0);
-            return "cart";
-        }
-        length = shoppingCart.getProducts().length - 1;
-        List<Product> listProducts = new ArrayList<>();
-        for(int i = 0; i < shoppingCart.getProducts().length; i++) {
-            listProducts.add(productService.findById(shoppingCart.getProducts()[i]));
-        }
-        listProducts.remove(product);
-        price -= product.getDiscount();
-        int[] newProducts = new int[length];
-        for(int i = 0; i < length; i++) {
-            newProducts[i] = listProducts.get(i).getId();
-        }
-        shoppingCart.setProducts(newProducts);
-        shoppingCart.setTotalPrice(price);
+        shoppingCart = shoppingCartService.deleteProduct(id, shoppingCart);
         return "cart";
     }
 
@@ -151,11 +110,7 @@ public class MainController {
 
     @PostMapping("/buy")
     public String buy(UserDTO userDTO, Model model, @ModelAttribute("shoppingCart") ShoppingCart shoppingCart) {
-        productService.buyProducts(shoppingCart.getProducts());
-        userDTO.setRoleId(1);
-        var shoppingCartId = shoppingCartService.add(shoppingCart);
-        var user = userService.add(userDTO);
-        shoppingCart = userService.addToHistory(user.getId(), shoppingCartId);
+        shoppingCart = userService.buyProducts(userDTO, shoppingCart);
         return main(model, shoppingCart);
     }
 
@@ -164,24 +119,35 @@ public class MainController {
         return "registration";
     }
 
-    @PostMapping("/registration")
-    public String registration(Model model, UserDTO userDTO, @ModelAttribute("user") User user) {
-        user = userService.registerUser(userDTO);
-        return "redirect::login";
+    @PostMapping("/user/registration")
+    public String registration(Model model, UserDTO userDTO, @ModelAttribute("shoppingCart") ShoppingCart shoppingCart, @ModelAttribute("user") User user) {
+        System.out.println(userDTO);
+        user = userService.registerUser(userDTO, shoppingCart);
+        return main(model, shoppingCart);
     }
 
     @GetMapping("/user/")
     public String userPage(Model model, @ModelAttribute("shoppingCart") ShoppingCart shoppingCart, @ModelAttribute("user") User user, Principal principal) {
-        user = userService.findByEmail(principal.getName());
+        user.setId(userService.findByEmail(principal.getName()).getId());
+        user.setName(userService.findByEmail(principal.getName()).getName());
+        user.setEmail(userService.findByEmail(principal.getName()).getEmail());
         var userShoppingCart = user.getShoppingCart();
-        shoppingCart.setId(userShoppingCart.getId());
-        shoppingCart.setProducts(userShoppingCart.getProducts());
-        shoppingCart.setTotalPrice(userShoppingCart.getTotalPrice());
-        shoppingCart.setStatus(userShoppingCart.getStatus());
+        if(userShoppingCart != null) {
+            shoppingCart.setId(userShoppingCart.getId());
+            shoppingCart.setProducts(userShoppingCart.getProducts());
+            shoppingCart.setTotalPrice(userShoppingCart.getTotalPrice());
+        }
         model.addAttribute("name", user.getName());
         model.addAttribute("email", user.getEmail());
         model.addAttribute("phoneNumber", user.getPhoneNumber());
         model.addAttribute("products", userService.getHistory(user.getId()));
         return "user";
+    }
+
+    @PostMapping("/submitReview")
+    public String addReview(Model model, @ModelAttribute("user") User user, ReviewDTO reviewDTO) {
+        reviewDTO.setUserId(user.getId());
+        reviewService.add(reviewDTO);
+        return "redirect:/index/user/";
     }
 }

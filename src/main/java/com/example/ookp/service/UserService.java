@@ -5,12 +5,13 @@ import com.example.ookp.mapper.UserMapper;
 import com.example.ookp.model.Role;
 import com.example.ookp.model.ShoppingCart;
 import com.example.ookp.repository.ProductRepository;
+import com.example.ookp.repository.ShoppingCartRepository;
 import com.example.ookp.repository.RoleRepository;
 import com.example.ookp.repository.UserRepository;
-import com.example.ookp.repository.ShoppingCartRepository;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import com.example.ookp.model.User;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,10 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.awt.geom.RoundRectangle2D;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -29,10 +27,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
-    private final ShoppingCartRepository shoppingCartRepository;
+    private final RoleService roleService;
     private final ShoppingCartService shoppingCartService;
-    private final ProductRepository productRepository;
+    private final OrderService orderService;
+    private final ProductService productService;
     private final UserMapper userMapper;
 
     @Transactional(readOnly = true)
@@ -89,49 +87,6 @@ public class UserService {
         return user.getShoppingCart();
     }
 
-    @Transactional(readOnly = true)
-    public List<String> getOrders() {
-        List<String> resultString = new ArrayList<>();
-        var badList = userRepository.getOrders();
-        System.out.println(badList.toString());
-        System.out.println(badList.size());
-        int j = 0;
-
-
-        Boolean isArray = false;
-        int size = badList.size();
-        for(int i = 0; i < size; i++) {
-            String str = "";
-            String temp = badList.remove(badList.size() - 1);
-            var parts = temp.split(",");
-            for (var part : parts) {
-                if(!isArray) {
-                    if(part.matches("\\d+")) {
-                        if(Integer.parseInt(part) > 100) {
-                            str += part + ";";
-                        } else {
-                            isArray = true;
-                            str += "[" + part;
-                        }
-                    } else {
-                        str += part + ";";
-                    }
-                } else {
-                    if(!part.matches("\\d+")) {
-                        isArray = false;
-                        str += "];" + part;
-                    } else {
-                        str += "," + part;
-                    }
-                }
-                if(part.equals("created") || part.equals("paid") || part.equals("delivered")) {
-                    resultString.add(str + " ");
-                }
-            }
-        }
-        return resultString;
-    }
-
     @Transactional(isolation = Isolation.REPEATABLE_READ)
     @Retryable(maxAttempts = 5)
     public User add(UserDTO userDTO) {
@@ -139,20 +94,45 @@ public class UserService {
         if(userDTO.getShoppingCartId() == 0) {
             user.setShoppingCart(null);
         } else {
-            user.setShoppingCart(shoppingCartRepository.findById(userDTO.getShoppingCartId()).get());
+            user.setShoppingCart(shoppingCartService.findById(userDTO.getShoppingCartId()));
         }
-        Role role = roleRepository.findById(userDTO.getRoleId()).get();
+        Role role = roleService.findById(userDTO.getRoleId());
         user.setRole(role);
         return userRepository.save(user);
     }
 
     @Transactional(isolation = Isolation.REPEATABLE_READ)
     @Retryable(maxAttempts = 5)
-    public User registerUser(UserDTO userDTO) {
+    public ShoppingCart buyProducts(UserDTO userDTO, ShoppingCart shoppingCart) {
+        productService.buyProducts(shoppingCart.getProducts());
+        userDTO.setRoleId(1);
+        userDTO.setPost("Nova poshta " + userDTO.getPost());
+        var shoppingCartId = shoppingCartService.add(shoppingCart);
+        System.out.println(userRepository.findUserByEmail(userDTO.getEmail()));
+        var user = userRepository.findUserByEmail(userDTO.getEmail());
+        if(user == null) {
+            user = add(userDTO);
+        } else {
+            user.setCall(userDTO.isCall());
+            user.setTown(userDTO.getTown());
+            user.setPost(userDTO.getPost());
+            user.setPhoneNumber(userDTO.getPhoneNumber());
+            user = userRepository.save(user);
+        }
+        orderService.createNew(user, shoppingCart);
+        shoppingCart = addToHistory(user.getId(), shoppingCartId);
+        return shoppingCart;
+    }
+
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
+    @Retryable(maxAttempts = 5)
+    public User registerUser(UserDTO userDTO, ShoppingCart shoppingCart) {
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         var user = userMapper.toUser(userDTO);
         user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
-        user.setRole(roleRepository.findById(2).get());
+        user.setRole(roleService.findById(2));
+        shoppingCart = shoppingCartService.findById(shoppingCartService.add(shoppingCart));
+        user.setShoppingCart(shoppingCart);
         return userRepository.save(user);
     }
 
@@ -165,6 +145,18 @@ public class UserService {
         role.setName("USER");
         user.setRole(role);
         return userRepository.save(user);
+    }
+
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
+    @Retryable(maxAttempts = 5)
+    public User updateUserRole(int id) {
+        var user = userMapper.toUserDTO(findById(id));
+        if(findById(id).getRole().getId() == 3) {
+            user.setRoleId(2);
+        } else {
+            user.setRoleId(3);
+        }
+        return add(user);
     }
 
     @Transactional(isolation = Isolation.REPEATABLE_READ)

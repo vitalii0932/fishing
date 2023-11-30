@@ -1,13 +1,9 @@
 package com.example.ookp.repository;
 
-import com.example.ookp.model.Product;
 import com.example.ookp.model.ShoppingCart;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-
-import java.nio.charset.StandardCharsets;
-import java.util.List;
 
 public interface ShoppingCartRepository  extends JpaRepository<ShoppingCart, Integer> {
     @Query(value = "select id from shopping_cart order by id desc limit 1", nativeQuery = true)

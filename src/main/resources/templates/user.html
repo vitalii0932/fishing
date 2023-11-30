@@ -3,52 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/styles/user.css.css}">
     <title>User Data Page</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-        }
-
-        header {
-            background-color: #333;
-            color: white;
-            padding: 15px;
-            text-align: center;
-        }
-
-        main {
-            margin: 20px;
-        }
-
-        h2 {
-            color: #333;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
-
-        th {
-            background-color: #4CAF50;
-            color: white;
-        }
-
-        a {
-            color: white;
-            text-decoration: none;
-        }
-    </style>
 </head>
 <body>
 
@@ -60,14 +16,21 @@
     <h2>Дані про користувача</h2>
 
     <p>Ім'я: <span th:text="${name}"></span></p>
-        <p>Email: <span th:text="${email}"></span></p>
-        <p>Номер телефону: <span th:text="${phoneNumber}"></span></p>
+    <p>Email: <span th:text="${email}"></span></p>
+    <p>Номер телефону: <span th:text="${phoneNumber}"></span></p>
 
-    </div>
+    <form th:action="@{/index/submitReview}" method="post">
+        <div>
+            <label for="review">Відгук:</label>
+            <textarea id="review" name="reviewText" rows="4" required></textarea>
+        </div>
+        <div>
+            <input type="submit" value="Додати відгук">
+        </div>
+    </form>
 
     <h2>User Orders</h2>
 
-    <!-- Orders Table -->
     <table>
         <thead>
         <tr>

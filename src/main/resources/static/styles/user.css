@@ -1,0 +1,122 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+header {
+    background-color: #333;
+    color: white;
+    padding: 15px;
+    text-align: center;
+}
+
+main {
+    margin: 20px;
+}
+
+h2 {
+    color: #333;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+th {
+    background-color: #4CAF50;
+    color: white;
+}
+
+a {
+    color: white;
+    text-decoration: none;
+}
+
+.add_review, .add_review a {
+    text-decoration: none;
+    border: none;
+    background: none;
+    cursor: pointer;
+    padding: 0;
+    font: inherit;
+    color: inherit;
+}
+
+/* Style the button */
+.add_review {
+    background-color: #4caf50; /* Green background color */
+    color: white; /* White text color */
+    padding: 10px 20px; /* Add some padding */
+    border-radius: 5px; /* Add rounded corners */
+    font-size: 16px; /* Set font size */
+    transition: background-color 0.3s; /* Add a smooth transition on hover */
+    display: inline-block; /* Make the button a block element */
+}
+
+/* Change the button color on hover */
+.add_review:hover {
+    background-color: #45a049;
+}
+
+/* Style the anchor tag inside the button */
+.add_review a {
+    color: inherit; /* Inherit text color from the button */
+    text-decoration: none; /* Remove underline */
+    display: inline-block; /* Make the anchor tag a block element inside the button */
+    padding: 0px 20px; /* Match the button padding */
+}
+
+form {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+    max-width: 700px;
+    width: 100%;
+}
+
+div {
+    margin-bottom: 10px;
+}
+
+label {
+    display: block;
+    font-weight: bold;
+}
+
+input, textarea {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+textarea {
+    resize: vertical;
+}
+
+input[type="submit"] {
+    margin-top: 20px;
+    margin-bottom: 0px;
+    background-color: #4caf50;
+    color: white;
+    cursor: pointer;
+}
+
+div.th-error {
+    color: #ff0000;
+}

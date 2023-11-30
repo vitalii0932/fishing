@@ -1,10 +1,10 @@
 package com.example.ookp.service;
 
+import com.example.ookp.model.Product;
+import com.example.ookp.repository.ProductRepository;
 import com.example.ookp.dto.ProductDTO;
 import com.example.ookp.mapper.ProductMapper;
-import com.example.ookp.model.Product;
 import com.example.ookp.repository.TypeRepository;
-import com.example.ookp.repository.ProductRepository;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.retry.annotation.Retryable;

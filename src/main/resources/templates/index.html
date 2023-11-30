@@ -139,57 +139,12 @@
 
 <div class="swiper mySwiper">
     <div class="swiper-wrapper">
-        <div class="swiper-slide">
+        <div class="swiper-slide" th:each="el : ${reviews}">
             <div class="image-text-block">
-                <img src="https://via.placeholder.com/145x145" alt="Описание изображения">
                 <div class="text">
-                <p style="text-align: left; padding-left: 40px;">Юрій</p>
-                <p style="text-align: left; padding-left: 40px;">21/10/2023</p>
-                <p>Замовляв спінінг та приманку. Вже на наступний день спімав щуку 2 кг! Дякую за швидкий та приємний сервіс!</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="swiper-slide">
-            <div class="image-text-block">
-                <img src="https://via.placeholder.com/145x145" alt="Описание изображения">
-                <div class="text">
-                <p style="text-align: left; padding-left: 40px;">Юрій</p>
-                <p style="text-align: left; padding-left: 40px;">21/10/2023</p>
-                <p>Замовляв спінінг та приманку. Вже на наступний день спімав щуку 2 кг! Дякую за швидкий та приємний сервіс!</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="swiper-slide">
-            <div class="image-text-block">
-                <img src="https://via.placeholder.com/145x145" alt="Описание изображения">
-                <div class="text">
-                <p style="text-align: left; padding-left: 40px;">Юрій</p>
-                <p style="text-align: left; padding-left: 40px;">21/10/2023</p>
-                <p>Замовляв спінінг та приманку. Вже на наступний день спімав щуку 2 кг! Дякую за швидкий та приємний сервіс!</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="swiper-slide">
-            <div class="image-text-block">
-                <img src="https://via.placeholder.com/145x145" alt="Описание изображения">
-                <div class="text">
-                <p style="text-align: left; padding-left: 40px;">Юрій</p>
-                <p style="text-align: left; padding-left: 40px;">21/10/2023</p>
-                <p>Замовляв спінінг та приманку. Вже на наступний день спімав щуку 2 кг! Дякую за швидкий та приємний сервіс!</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="swiper-slide">
-            <div class="image-text-block">
-                <img src="https://via.placeholder.com/145x145" alt="Описание изображения">
-                <div class="text">
-                <p style="text-align: left; padding-left: 40px;">Юрій</p>
-                <p style="text-align: left; padding-left: 40px;">21/10/2023</p>
-                <p>Замовляв спінінг та приманку. Вже на наступний день спімав щуку 2 кг! Дякую за швидкий та приємний сервіс!</p>
+                <p style="text-align: left; padding-left: 40px;" th:text="${el.getUser().name}"></p>
+                <p style="text-align: left; padding-left: 40px;" th:text="${el.getReviewDate()}"></p>
+                <p th:text="${el.getReviewText()}"></p>
                 </div>
             </div>
         </div>
@@ -201,51 +156,6 @@
     <div class="swiper-button-prev"></div>
 </div>
 
-
-<script>
-    function buyProduct(button) {
-        var productId = button.getAttribute('data-id');
-
-        // Выполнение AJAX-запроса после нажатия кнопки
-        fetch('/index/shop/buy/' + productId, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json', // Установите заголовок, если это необходимо
-                // Другие заголовки могут быть добавлены здесь
-            },
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json(); // Или response.text(), в зависимости от того, какой формат вы ожидаете
-            })
-            .then(data => {
-                console.log('Запрос успешно выполнен', data);
-                alert(data);
-                // Дополнительные действия после успешного запроса
-            })
-            .catch(error => {
-                console.error('Произошла ошибка при выполнении запроса', error);
-            });
-    }
-</script>
-
-<script>
-    var swiper = new Swiper(".mySwiper", {
-      spaceBetween: 30,
-      navigation: {
-        nextEl: ".swiper-button-next",
-        prevEl: ".swiper-button-prev",
-      },
-      pagination: {
-        el: ".swiper-pagination",
-      },
-      mousewheel: true,
-      keyboard: true,
-    });
-</script>
-
 <div class="container">
     <div class="map">
         <h1>Де ми знаходимось</h1>
@@ -255,7 +165,8 @@
 
 <footer th:insert="blocks/footer :: footer"></footer>
 
-<script src="script.js"></script>
+<script th:src="@{/js/script.js}"></script>
+<script th:src="@{/js/mainScript.js}"></script>
 
 </body>
 </html>

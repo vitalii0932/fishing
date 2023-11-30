@@ -2,10 +2,28 @@ package com.example.ookp.mapper;
 
 import com.example.ookp.dto.ShoppingCartDTO;
 import com.example.ookp.model.ShoppingCart;
-import org.mapstruct.Mapper;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
-@Mapper(componentModel = "spring")
-public interface ShoppingCartMapper {
-    ShoppingCart toShoppingCart(ShoppingCartDTO shoppingCartDTO);
-    ShoppingCartDTO toShoppingCartDTO(ShoppingCart shoppingCart);
+@Data
+@Component
+@RequiredArgsConstructor
+public class ShoppingCartMapper {
+
+    public ShoppingCart toShoppingCart(ShoppingCartDTO shoppingCartDTO) {
+        var shoppingCart = new ShoppingCart();
+        shoppingCart.setId(shoppingCartDTO.getId());
+        shoppingCart.setProducts(shoppingCartDTO.getProductsIds());
+        shoppingCart.setTotalPrice(shoppingCartDTO.getTotalPrice());
+        return shoppingCart;
+    }
+
+    public ShoppingCartDTO toShoppingCartDTO(ShoppingCart shoppingCart) {
+        var shoppingCartDTO = new ShoppingCartDTO();
+        shoppingCartDTO.setId(shoppingCart.getId());
+        shoppingCartDTO.setProductsIds(shoppingCart.getProducts());
+        shoppingCartDTO.setTotalPrice(shoppingCart.getTotalPrice());
+        return shoppingCartDTO;
+    }
 }

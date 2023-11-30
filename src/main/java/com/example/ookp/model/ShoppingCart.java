@@ -14,5 +14,4 @@ public class ShoppingCart {
     private int[] products;
     @Column(name = "total_price")
     private double totalPrice;
-    private String status;
 }

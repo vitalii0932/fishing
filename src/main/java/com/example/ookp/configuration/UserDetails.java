@@ -1,7 +1,6 @@
 package com.example.ookp.configuration;
 
 import com.example.ookp.model.User;
-import com.example.ookp.repository.UserRepository;
 import com.example.ookp.service.UserService;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @Data

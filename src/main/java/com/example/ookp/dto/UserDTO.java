@@ -13,6 +13,6 @@ public class UserDTO {
     private int shoppingCartId;
     private int[] history;
     private String town;
-    private int post;
+    private String post;
     private boolean call;
 }

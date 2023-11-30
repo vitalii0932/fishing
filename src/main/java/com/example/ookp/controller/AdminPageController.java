@@ -1,14 +1,11 @@
 package com.example.ookp.controller;
 
-import com.example.ookp.dto.ProductDTO;
-import com.example.ookp.mapper.ProductMapper;
 import com.example.ookp.mapper.UserMapper;
 import com.example.ookp.model.Product;
+import com.example.ookp.dto.ProductDTO;
+import com.example.ookp.mapper.ProductMapper;
 import com.example.ookp.model.Type;
-import com.example.ookp.service.ProductService;
-import com.example.ookp.service.ShoppingCartService;
-import com.example.ookp.service.TypeService;
-import com.example.ookp.service.UserService;
+import com.example.ookp.service.*;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -21,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class AdminPageController {
     private final ProductService productService;
+    private final OrderService orderService;
     private final ShoppingCartService shoppingCartService;
     private final UserService userService;
     private final TypeService typeService;
@@ -52,13 +50,7 @@ public class AdminPageController {
 
     @GetMapping("/update/users/{id}")
     public String updateUser(Model model, @PathVariable("id") int id) {
-        var user = userMapper.toUserDTO(userService.findById(id));
-        if(userService.findById(id).getRole().getId() == 3) {
-            user.setRoleId(2);
-        } else {
-            user.setRoleId(3);
-        }
-        userService.add(user);
+        userService.updateUserRole(id);
         return "admin";
     }
 
@@ -80,9 +72,9 @@ public class AdminPageController {
         return admin(model);
     }
 
-    @GetMapping("/editStatus/{userName}")
-    public String editStatus(Model model, @PathVariable("userName") String userName) {
-        shoppingCartService.editStatus(userName);
+    @GetMapping("/editStatus/{id}")
+    public String editStatus(Model model, @PathVariable("id") int orderId) {
+        orderService.editStatus(orderId);
         return admin(model);
     }
 }

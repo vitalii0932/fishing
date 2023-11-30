@@ -4,7 +4,6 @@ import com.example.ookp.dto.RoleDTO;
 import com.example.ookp.mapper.RoleMapper;
 import com.example.ookp.model.Role;
 import com.example.ookp.repository.RoleRepository;
-import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.retry.annotation.Retryable;

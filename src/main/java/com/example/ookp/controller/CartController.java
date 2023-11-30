@@ -1,10 +1,6 @@
 package com.example.ookp.controller;
 
-import com.example.ookp.dto.ProductDTO;
-import com.example.ookp.mapper.ProductMapper;
-import com.example.ookp.service.ProductService;
 import com.example.ookp.service.ShoppingCartService;
-import com.example.ookp.service.TypeService;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -24,7 +20,6 @@ public class CartController {
         var products = shoppingCartService.getProducts(shoppingCartId);
         model.addAttribute("title", shoppingCartId);
         model.addAttribute("products", products);
-        System.out.println(shoppingCart.getProducts());
         model.addAttribute("totalPrice", shoppingCart.getTotalPrice());
         return "cart";
     }
