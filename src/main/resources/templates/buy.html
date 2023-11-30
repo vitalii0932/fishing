@@ -12,24 +12,23 @@
 <body>
 
 <header>
-    <a th:href="@{'/index'}">
+    <a th:href="@{'/'}">
         <i class="fa-solid fa-fish-fins icon"></i>
         <h1>Fishing</h1>
     </a>
 </header>
-
 <div class="container">
     <form th:action="@{/index/buy}" method="post">
-        <label> ПІБ: <input type="text" name="name"/> </label>
-        <label> Електронна пошта: <input type="text" name="email"/> </label>
-        <label> Номер телефону: <input type="text" name="phoneNumber"/> </label>
-        <label> Місто: <input type="text" name="town"/> </label>
-        <label> Відділення нової почти: <input type="text" name="post"/> </label>
+        <label> ПІБ: <input type="text" name="name" placeholder="Ваше ім'я"/> </label>
+        <label> Електронна пошта: <input type="text" name="email" placeholder="example@gmail.com"/> </label>
+        <label> Номер телефону: <input type="text" name="phoneNumber" placeholder="+380000000000"/> </label>
+        <label> Місто: <input type="text" name="town" placeholder="Місто"/> </label>
+        <label> Відділення нової пошти: <input type="text" name="post" placeholder="Номер відділення пошти"/> </label>
         <div class="checkbox-container">
             <input type="checkbox" id="callMe" name="call" value="true" style="margin: 0; width: 20px; margin-right: 20px"/>
             <label for="callMe">Зателефонувати мені</label>
         </div>
-        <input type="submit" value="Sign In"/>
+        <input type="submit" value="Оформити"/>
     </form>
 </div>
 

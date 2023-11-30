@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-@RequestMapping("/index")
+@RequestMapping("")
 @Data
 @SessionAttributes(value = {"shoppingCart", "user"})
 @RequiredArgsConstructor
@@ -41,7 +41,7 @@ public class MainController {
         return new User();
     }
 
-    @GetMapping("")
+    @GetMapping("/")
     public String main(Model model, @ModelAttribute("shoppingCart") ShoppingCart shoppingCart) {
         var discountProducts = productService.findWithDiscount();
         var topProducts = productService.findByTopSales(15);
@@ -53,7 +53,12 @@ public class MainController {
         return "index";
     }
 
-    @GetMapping("/shop/{categoryId}")
+    @GetMapping("/send")
+    public String send(Model model) {
+        return "send";
+    }
+
+    @GetMapping("/index/shop/{categoryId}")
     public String shopCategory(Model model, @PathVariable int categoryId, @ModelAttribute("shoppingCart") ShoppingCart shoppingCart) {
         var types = typeService.getTypesByCategoryId(categoryId);
         var category = categoryService.findById(categoryId);
@@ -64,7 +69,7 @@ public class MainController {
         return "shop";
     }
 
-    @GetMapping("/shop/type/{typeId}")
+    @GetMapping("/index/shop/type/{typeId}")
     public String shopType(Model model, @PathVariable int typeId, @ModelAttribute("shoppingCart") ShoppingCart shoppingCart) {
         var type = typeService.findById(typeId);
         var types = typeService.getTypesByCategoryId(type.getCategory().getId());
@@ -75,7 +80,7 @@ public class MainController {
         return "shop";
     }
 
-    @GetMapping("/shop/byName/{productName}")
+    @GetMapping("/index/shop/byName/{productName}")
     public String shopName(Model model, @PathVariable String productName, @ModelAttribute("shoppingCart") ShoppingCart shoppingCart) {
         var products = productService.findByName(productName);
         model.addAttribute("categoryName", "Результат за пошуком");
@@ -83,13 +88,13 @@ public class MainController {
         return "shop";
     }
 
-    @GetMapping("/shop/buy/{id}")
+    @GetMapping("/index/shop/buy/{id}")
     public String buyProduct(Model model, @PathVariable int id, @ModelAttribute("shoppingCart") ShoppingCart shoppingCart) {
         shoppingCart = shoppingCartService.addProduct(id, shoppingCart);
         return main(model, shoppingCart);
     }
 
-    @GetMapping("/shoppingCart")
+    @GetMapping("/index/shoppingCart")
     public String shoppingCart(Model model, @ModelAttribute("shoppingCart") ShoppingCart shoppingCart) {
         var products = shoppingCartService.getProductsByShoppingCart(shoppingCart);
         model.addAttribute("products", products);
@@ -97,36 +102,36 @@ public class MainController {
         return "cart";
     }
 
-    @GetMapping("/shoppingCart/deleteProduct/{id}")
+    @GetMapping("/index/shoppingCart/deleteProduct/{id}")
     public String deleteProduct(@PathVariable int id, @ModelAttribute("shoppingCart") ShoppingCart shoppingCart) {
         shoppingCart = shoppingCartService.deleteProduct(id, shoppingCart);
         return "cart";
     }
 
-    @GetMapping("/buy")
+    @GetMapping("/index/buy")
     public String buyPage(Model model, @ModelAttribute("shoppingCart") ShoppingCart shoppingCart) {
         return "buy";
     }
 
-    @PostMapping("/buy")
+    @PostMapping("/index/buy")
     public String buy(UserDTO userDTO, Model model, @ModelAttribute("shoppingCart") ShoppingCart shoppingCart) {
         shoppingCart = userService.buyProducts(userDTO, shoppingCart);
         return main(model, shoppingCart);
     }
 
-    @GetMapping("/registration")
+    @GetMapping("/index/registration")
     public String registration(Model model, @ModelAttribute("user") User user) {
         return "registration";
     }
 
-    @PostMapping("/user/registration")
+    @PostMapping("/index/user/registration")
     public String registration(Model model, UserDTO userDTO, @ModelAttribute("shoppingCart") ShoppingCart shoppingCart, @ModelAttribute("user") User user) {
         System.out.println(userDTO);
         user = userService.registerUser(userDTO, shoppingCart);
         return main(model, shoppingCart);
     }
 
-    @GetMapping("/user/")
+    @GetMapping("/index/user/")
     public String userPage(Model model, @ModelAttribute("shoppingCart") ShoppingCart shoppingCart, @ModelAttribute("user") User user, Principal principal) {
         user.setId(userService.findByEmail(principal.getName()).getId());
         user.setName(userService.findByEmail(principal.getName()).getName());
@@ -144,7 +149,7 @@ public class MainController {
         return "user";
     }
 
-    @PostMapping("/submitReview")
+    @PostMapping("/index/submitReview")
     public String addReview(Model model, @ModelAttribute("user") User user, ReviewDTO reviewDTO) {
         reviewDTO.setUserId(user.getId());
         reviewService.add(reviewDTO);

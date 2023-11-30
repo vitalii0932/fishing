@@ -3,6 +3,7 @@ body {
     margin: 0px;
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
+    justify-content: center;
 }
 
 header {
@@ -15,13 +16,16 @@ header {
 }
 
 .container {
-    height: 100vh;
+    min-height: 100vh; /* Замінено height на min-height */
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 400px;
+    position: relative;
     justify-content: center;
-    width: 100%;
-    margin-top: 20px;
+    transform: scale(1.2);
+    margin: auto;
+    overflow-y: hidden;
 }
 
 form {

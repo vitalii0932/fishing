@@ -28,11 +28,9 @@ hr{
     border: 0;
     
     background-color: #e5e5e5;
-    
 }
 
 
-/*Container*/
 .container {
     width: 100%;
     margin: 0 auto;
@@ -44,8 +42,8 @@ hr{
 }
 
 body {
-    margin: 0; /* Убираем отступы по умолчанию */
-    padding: 0; /* Убираем внутренние отступы по умолчанию */
+    margin: 0;
+    padding: 0;
 }
 
 .header-top {
@@ -101,14 +99,14 @@ h1 {
     border: 0;
     background: none;
     padding: 20px;
-    transition: background-color 0.3s; /* Добавляем плавное изменение цвета фона */
-    position: relative; /* Для позиционирования псевдоэлемента */
+    transition: background-color 0.3s;
+    position: relative;
 }
 
 .cart i {
     color: #fff;
     font-size: 24px;
-    position: relative; /* Устанавливаем позицию относительно .cart */
+    position: relative;
 }
 
 .cart::before {
@@ -120,12 +118,12 @@ h1 {
     bottom: 0;
     background-color: transparent;
     border-radius: 50%;
-    transition: background-color 0.3s; /* Добавляем плавное изменение цвета фона псевдоэлемента */
-    pointer-events: none; /* Запрещаем взаимодействие с псевдоэлементом */
+    transition: background-color 0.3s;
+    pointer-events: none;
 }
 
 .cart:hover::before {
-    background-color: #777; /* Изменяем фон псевдоэлемента при наведении */
+    background-color: #777;
 }
 
 .phone-icon {
@@ -137,14 +135,14 @@ h1 {
     border: 0;
     background: none;
     padding: 20px;
-    transition: background-color 0.3s; /* Добавляем плавное изменение цвета фона */
-    position: relative; /* Для позиционирования псевдоэлемента */
+    transition: background-color 0.3s;
+    position: relative;
 }
 
 .login i {
     color: #fff;
     font-size: 24px;
-    position: relative; /* Устанавливаем позицию относительно .cart */
+    position: relative;
 }
 
 .login::before {
@@ -347,8 +345,8 @@ h1 {
 }
 
 .about {
-    display: flex; /* Элементы будут располагаться горизонтально */
-    justify-content: left; /* Равномерное распределение элементов по горизонтали */
+    display: flex;
+    justify-content: left;
     flex-wrap: wrap;
 }
 
@@ -788,6 +786,12 @@ footer {
     border: none; /* Убираем границы кнопки */
     padding: 0; /* Убираем внутренний отступ */
     cursor: pointer; /* Задаем курсор указателя при наведении */
+}
+
+.sendPost {
+    padding-top: 30px;
+    padding-left: 100px;
+    padding-right: 100px;
 }
 
 
