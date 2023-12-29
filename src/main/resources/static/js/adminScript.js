@@ -6,46 +6,46 @@ function showOrders() {
     fetch(`/adminData/getTableData/orders`)
         .then(response => response.json())
         .then(data => {
-            var tableContainer = document.getElementById('tableContainer');
+            let tableContainer = document.getElementById('tableContainer');
             tableContainer.innerHTML = ''; // Clear previous content
-            var table = document.createElement('table');
-            var thead = document.createElement('thead');
-            var tbody = document.createElement('tbody');
+            let table = document.createElement('table');
+            let thead = document.createElement('thead');
+            let tbody = document.createElement('tbody');
 
-            var headerRow = document.createElement('tr');
-            var th = document.createElement('th');
+            let headerRow = document.createElement('tr');
+            let th = document.createElement('th');
             th.textContent = 'Order id';
             headerRow.appendChild(th);
 
-            var th = document.createElement('th');
+            th = document.createElement('th');
             th.textContent = 'User name';
             headerRow.appendChild(th);
 
-            var th = document.createElement('th');
+            th = document.createElement('th');
             th.textContent = 'Phone number';
             headerRow.appendChild(th);
 
-            var th = document.createElement('th');
+            th = document.createElement('th');
             th.textContent = 'Call';
             headerRow.appendChild(th);
 
-            var th = document.createElement('th');
+            th = document.createElement('th');
             th.textContent = 'Town';
             headerRow.appendChild(th);
 
-            var th = document.createElement('th');
+            th = document.createElement('th');
             th.textContent = 'Post index';
             headerRow.appendChild(th);
 
-            var th = document.createElement('th');
+            th = document.createElement('th');
             th.textContent = 'Products';
             headerRow.appendChild(th);
 
-            var th = document.createElement('th');
+            th = document.createElement('th');
             th.textContent = 'Status';
             headerRow.appendChild(th);
 
-            var th = document.createElement('th');
+            th = document.createElement('th');
             th.textContent = 'Edit status';
             headerRow.appendChild(th);
 
@@ -53,16 +53,15 @@ function showOrders() {
 
             data.forEach(rowData => {
                 let parts = rowData.split(";");
-
-                var row = document.createElement('tr');
+                let row = document.createElement('tr');
                 parts.forEach(result => {
-                    var cell = document.createElement('td');
-                    cell.textContent = result; // Заменил rowData на result
+                    let cell = document.createElement('td');
+                    cell.textContent = result;
                     row.appendChild(cell);
                 });
 
-                var editButtonCell = document.createElement('td');
-                var editButton = document.createElement('button');
+                let editButtonCell = document.createElement('td');
+                let editButton = document.createElement('button');
                 editButton.textContent = 'Edit status';
                 editButton.className = 'edit-button';
                 editButton.addEventListener('click', function () {
@@ -77,25 +76,25 @@ function showOrders() {
             table.appendChild(thead);
             table.appendChild(tbody);
             tableContainer.appendChild(table);
-        })
+        });
 }
 
 function showTable(tableName) {
     fetch(`/adminData/getTableData/${tableName}`)
         .then(response => response.json())
         .then(data => {
-            var tableContainer = document.getElementById('tableContainer');
+            let tableContainer = document.getElementById('tableContainer');
             tableContainer.innerHTML = ''; // Clear previous content
 
-            var table = document.createElement('table');
-            var thead = document.createElement('thead');
-            var tbody = document.createElement('tbody');
+            let table = document.createElement('table');
+            let thead = document.createElement('thead');
+            let tbody = document.createElement('tbody');
 
-            var headers = Object.keys(data[0]);
+            let headers = Object.keys(data[0]);
 
-            var headerRow = document.createElement('tr');
+            let headerRow = document.createElement('tr');
             headers.forEach(header => {
-                var th = document.createElement('th');
+                let th = document.createElement('th');
                 if (header === 'type') {
                     th.textContent = 'Type ID';
                     headerRow.appendChild(th);
@@ -106,7 +105,8 @@ function showTable(tableName) {
                 }
                 headerRow.appendChild(th);
             });
-            if(tableName == 'users') {
+
+            if (tableName === 'users') {
                 headerRow.innerHTML += '<th>Заблокувати</th><th>Видалити</th>';
             } else {
                 headerRow.innerHTML += '<th>Змінити</th><th>Видалити</th>';
@@ -114,9 +114,9 @@ function showTable(tableName) {
             thead.appendChild(headerRow);
 
             data.forEach(rowData => {
-                var row = document.createElement('tr');
+                let row = document.createElement('tr');
                 headers.forEach(header => {
-                    var cell = document.createElement('td');
+                    let cell = document.createElement('td');
                     if (header === 'type') {
                         cell.textContent = rowData.type.id;
                         row.appendChild(cell);
@@ -128,9 +128,9 @@ function showTable(tableName) {
                     row.appendChild(cell);
                 });
 
-                var editButtonCell = document.createElement('td');
-                var editButton = document.createElement('button');
-                if(tableName == 'users') {
+                let editButtonCell = document.createElement('td');
+                let editButton = document.createElement('button');
+                if (tableName === 'users') {
                     editButton.textContent = 'Заблокувати';
                 } else {
                     editButton.textContent = 'Змінити';
@@ -143,8 +143,8 @@ function showTable(tableName) {
                 editButtonCell.appendChild(editButton);
                 row.appendChild(editButtonCell);
 
-                var deleteButtonCell = document.createElement('td');
-                var deleteButton = document.createElement('button');
+                let deleteButtonCell = document.createElement('td');
+                let deleteButton = document.createElement('button');
                 deleteButton.textContent = 'Видалити';
                 deleteButton.className = 'delete-button';
                 deleteButton.addEventListener('click', function () {

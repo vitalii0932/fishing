@@ -1,10 +1,5 @@
-function buy() {
-
-    window.location.href = '/index/buy';
-}
-
 function deleteProduct(button) {
-    var productId = button.getAttribute('data-id');
+    let productId = button.getAttribute('data-id');
 
     fetch('/index/shoppingCart/deleteProduct/' + productId, {
         method: 'GET',

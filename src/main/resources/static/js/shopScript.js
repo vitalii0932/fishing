@@ -1,26 +1,42 @@
-function buyProduct(button) {
-    var productId = button.getAttribute('data-id');
+function updatePosition() {
+    let centeredBlock = document.getElementById('centeredBlock');
+    centeredBlock.style.top = '50%';
+    centeredBlock.style.left = '50%';
+    centeredBlock.style.transform = 'translate(-50%, -50%)';
+}
 
-    // Выполнение AJAX-запроса после нажатия кнопки
+window.addEventListener('load', updatePosition);
+window.addEventListener('resize', updatePosition);
+
+function buyProduct(button) {
+    let productId = button.getAttribute('data-id');
+
+    // Виконання AJAX-запиту після натискання кнопки
     fetch('/index/shop/buy/' + productId, {
         method: 'GET',
         headers: {
-            'Content-Type': 'application/json', // Установите заголовок, если это необходимо
-            // Другие заголовки могут быть добавлены здесь
+            'Content-Type': 'application/json', // Встановлюємо заголовок, якщо потрібно
+            // Інші заголовки можуть бути додані тут
         },
     })
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
-            return response.json(); // Или response.text(), в зависимости от того, какой формат вы ожидаете
+            let centeredBlock = document.getElementById('centeredBlock');
+            centeredBlock.style.display = 'block';
+
+            setTimeout(function() {
+                centeredBlock.style.display = 'none';
+            }, 1500);
+            return response.json(); // Або response.text(), залежно від очікуваного формату
         })
         .then(data => {
-            console.log('Запрос успешно выполнен', data);
+            console.log('Запит успішно виконаний', data);
             alert(data);
-            // Дополнительные действия после успешного запроса
+            // Додаткові дії після успішного запиту
         })
         .catch(error => {
-            console.error('Произошла ошибка при выполнении запроса', error);
+            console.error('Помилка при виконанні запиту', error);
         });
 }

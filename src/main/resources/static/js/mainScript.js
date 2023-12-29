@@ -1,5 +1,15 @@
+function updatePosition() {
+    let centeredBlock = document.getElementById('centeredBlock');
+    centeredBlock.style.top = '50%';
+    centeredBlock.style.left = '50%';
+    centeredBlock.style.transform = 'translate(-50%, -50%)';
+}
+
+window.addEventListener('load', updatePosition);
+window.addEventListener('resize', updatePosition);
+
 function buyProduct(button) {
-    var productId = button.getAttribute('data-id');
+    let productId = button.getAttribute('data-id');
 
     // Выполнение AJAX-запроса после нажатия кнопки
     fetch('/index/shop/buy/' + productId, {
@@ -13,6 +23,12 @@ function buyProduct(button) {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
+            let centeredBlock = document.getElementById('centeredBlock');
+            centeredBlock.style.display = 'block';
+
+            setTimeout(function() {
+                centeredBlock.style.display = 'none';
+            }, 1500);
             return response.json(); // Или response.text(), в зависимости от того, какой формат вы ожидаете
         })
         .then(data => {
@@ -25,7 +41,7 @@ function buyProduct(button) {
         });
 }
 
-var swiper = new Swiper(".mySwiper", {
+let swiper = new Swiper(".mySwiper", {
     spaceBetween: 30,
     navigation: {
         nextEl: ".swiper-button-next",
