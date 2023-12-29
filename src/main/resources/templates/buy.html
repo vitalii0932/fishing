@@ -21,14 +21,14 @@
         <div th:each="line : ${message.split('\n')}" class="error-message" th:text="${line}"></div>
     </div>
 
-    <form th:action="@{/index/buy}" method="post">
-        <label> ПІБ: <input type="text" name="name" placeholder="Ваше ім'я"/> </label>
-        <label> Електронна пошта: <input type="text" name="email" placeholder="example@gmail.com"/> </label>
-        <label> Номер телефону: <input type="text" name="phoneNumber" placeholder="+380000000000"/> </label>
-        <label> Місто: <input type="text" name="town" placeholder="Місто"/> </label>
-        <label> Відділення нової пошти: <input type="text" name="post" placeholder="Номер відділення пошти"/> </label>
+    <form th:action="@{/index/buy}" method="post" th:object="${user}" >
+        <label> ПІБ: <input type="text" th:field="*{name}" placeholder="Ваше ім'я"/> </label>
+        <label> Електронна пошта: <input type="text" th:field="*{email}" placeholder="example@gmail.com"/> </label>
+        <label> Номер телефону: <input type="text" th:field="*{phoneNumber}" placeholder="+380000000000"/> </label>
+        <label> Місто: <input type="text" th:field="*{town}" placeholder="Місто"/> </label>
+        <label> Відділення нової пошти: <input type="text" th:field="*{post}" placeholder="Номер відділення пошти"/> </label>
         <div class="checkbox-container">
-            <input type="checkbox" id="callMe" name="call" value="true" style="margin: 0; width: 20px; margin-right: 20px"/>
+            <input type="checkbox" id="callMe" th:field="*{call}" value="true" style="margin: 0; width: 20px; margin-right: 20px"/>
             <label for="callMe">Зателефонувати мені</label>
         </div>
         <input type="submit" value="Оформити"/>

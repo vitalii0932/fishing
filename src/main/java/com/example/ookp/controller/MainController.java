@@ -154,6 +154,11 @@ public class MainController {
             return "registration";
         }
 
+        if(userService.findByEmail(user.getEmail()) != null) {
+            model.addAttribute("message", "This email is used");
+            return "registration";
+        }
+
         userService.registerUser(user, shoppingCart);
         return main(model, shoppingCart);
     }

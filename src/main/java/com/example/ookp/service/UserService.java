@@ -112,11 +112,12 @@ public class UserService {
         if(userTemp == null) {
             userTemp = add(userMapper.toUserDTO(user));
         } else {
+            userTemp.setEmail(user.getEmail());
+            userTemp.setName(user.getName());
             userTemp.setCall(user.getCall());
             userTemp.setTown(user.getTown());
             userTemp.setPost(user.getPost());
             userTemp.setPhoneNumber(user.getPhoneNumber());
-            userRepository.save(userTemp);
         }
         orderService.createNew(userTemp, shoppingCart);
         shoppingCart = addToHistory(userTemp.getId(), shoppingCartId);
