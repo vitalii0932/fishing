@@ -63,7 +63,7 @@ public class ProductService {
 
     @Transactional(isolation = Isolation.REPEATABLE_READ)
     @Retryable(maxAttempts = 5)
-    public boolean buyProducts(int[] productsIds) {
+    public boolean buyProducts(Integer[] productsIds) {
         for(var item : productsIds) {
             var temp = findById(item);
             temp.setCount(temp.getCount() - 1);

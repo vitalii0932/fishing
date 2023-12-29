@@ -13,7 +13,7 @@ public class ShoppingCart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private int[] products;
+    private Integer[] products;
     @Column(name = "total_price")
     private Double totalPrice;
 }

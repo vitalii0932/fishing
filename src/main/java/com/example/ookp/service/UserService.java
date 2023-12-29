@@ -76,7 +76,7 @@ public class UserService {
     @Retryable(maxAttempts = 5)
     public ShoppingCart addToHistory(int userId, int shoppingCartId) {
         var user = findById(userId);
-        var history = user.getHistory() == null ? new int[1] : new int[user.getHistory().length + 1];
+        Integer[] history = user.getHistory() == null ? new Integer[1] : new Integer[user.getHistory().length + 1];
         for(int i = 0; i < history.length - 1; i++) {
             history[i] = user.getHistory()[i];
         }

@@ -69,7 +69,7 @@ public class ShoppingCartService {
         var products = shoppingCart.getProducts();
         var length = products == null ? 1 : products.length + 1;
         var cartTotalPrice = shoppingCart.getTotalPrice();
-        int[] newProducts = new int[length];
+        Integer[] newProducts = new Integer[length];
         if(products != null) {
             for(int i = 0; i < products.length; i++) {
                 newProducts[i] = products[i];
@@ -100,9 +100,8 @@ public class ShoppingCartService {
                 listProducts.add(shoppingCart.getProducts()[i]);
             }
             listProducts.remove(listProducts.indexOf(productId));
-            var newProducts = listProducts.stream()
-                                            .mapToInt(Integer::intValue)
-                                            .toArray();
+            Integer[] newProducts = listProducts.toArray(new Integer[listProducts.size()]);
+
             cartTotalPrice -= product.getPrice();
             shoppingCart.setProducts(newProducts);
             shoppingCart.setTotalPrice(cartTotalPrice);
@@ -125,7 +124,7 @@ public class ShoppingCartService {
     @Retryable(maxAttempts = 5)
     public int create() {
         ShoppingCart shoppingCart = new ShoppingCart();
-        shoppingCart.setProducts(new int[0]);
+        shoppingCart.setProducts(new Integer[0]);
         shoppingCart.setTotalPrice(0.0);
         return shoppingCartRepository.save(shoppingCart).getId();
     }

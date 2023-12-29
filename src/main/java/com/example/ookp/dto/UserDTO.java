@@ -11,7 +11,7 @@ public class UserDTO {
     private String password;
     private int roleId;
     private int shoppingCartId;
-    private int[] history;
+    private Integer[] history;
     private String town;
     private String post;
     private boolean call;

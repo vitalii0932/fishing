@@ -6,6 +6,9 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity(name = "users")
 @Data
 public class User {
@@ -26,7 +29,7 @@ public class User {
     private String password;
     @OneToOne
     private ShoppingCart shoppingCart;
-    private int[] history;
+    private Integer[] history;
 
     @ManyToOne
     private Role role;

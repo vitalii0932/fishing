@@ -7,6 +7,6 @@ import java.util.List;
 @Data
 public class ShoppingCartDTO {
     private int id;
-    private int[] productsIds;
+    private Integer[] productsIds;
     private double totalPrice;
 }
