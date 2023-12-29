@@ -41,7 +41,11 @@ public class UserMapper {
 
     public UserDTO toUserDTO(User user) {
         var userDTO = new UserDTO();
-        userDTO.setId(user.getId());
+        if(user.getId() == null) {
+            userDTO.setId(0);
+        } else {
+            userDTO.setId(user.getId());
+        }
         userDTO.setName(user.getName());
         userDTO.setEmail(user.getEmail());
         userDTO.setPhoneNumber(user.getPhoneNumber());

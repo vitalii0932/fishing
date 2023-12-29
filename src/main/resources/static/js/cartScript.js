@@ -1,3 +1,7 @@
+function buy() {
+    window.location.href = '/index/buy';
+}
+
 function deleteProduct(button) {
     let productId = button.getAttribute('data-id');
 

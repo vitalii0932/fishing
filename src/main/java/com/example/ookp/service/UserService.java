@@ -108,18 +108,18 @@ public class UserService {
         user.setRole(roleService.findById(1));
         user.setPost("Nova poshta " + user.getPost());
         var shoppingCartId = shoppingCartService.add(shoppingCart);
-        user = userRepository.findUserByEmail(user.getEmail());
-        if(user == null) {
-            user = add(userMapper.toUserDTO(user));
+        var userTemp = userRepository.findUserByEmail(user.getEmail());
+        if(userTemp == null) {
+            userTemp = add(userMapper.toUserDTO(user));
         } else {
-            user.setCall(user.getCall());
-            user.setTown(user.getTown());
-            user.setPost(user.getPost());
-            user.setPhoneNumber(user.getPhoneNumber());
-            user = userRepository.save(user);
+            userTemp.setCall(user.getCall());
+            userTemp.setTown(user.getTown());
+            userTemp.setPost(user.getPost());
+            userTemp.setPhoneNumber(user.getPhoneNumber());
+            userRepository.save(userTemp);
         }
-        orderService.createNew(user, shoppingCart);
-        shoppingCart = addToHistory(user.getId(), shoppingCartId);
+        orderService.createNew(userTemp, shoppingCart);
+        shoppingCart = addToHistory(userTemp.getId(), shoppingCartId);
         return shoppingCart;
     }
 

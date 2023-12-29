@@ -134,7 +134,7 @@ public class MainController {
         shoppingCart.setId(shoppingCartTemp.getId());
         shoppingCart.setProducts(shoppingCartTemp.getProducts());
         shoppingCart.setTotalPrice(shoppingCartTemp.getTotalPrice());
-        return main(model, shoppingCart);
+        return "redirect:/";
     }
 
     @GetMapping("/index/registration")
