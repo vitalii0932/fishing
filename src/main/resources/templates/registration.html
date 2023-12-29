@@ -1,21 +1,21 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
 <head>
-    <link rel="stylesheet" th:href="@{/styles/logReg.css}">
     <title>Registration</title>
 </head>
 <body>
 <div class="container">
     <div th:if="${message}">
-        <div class="error-message" th:text="${message}"></div>
+        <div th:each="line : ${message.split('\n')}" class="error-message" th:text="${line}"></div>
     </div>
 
-    <form th:action="@{/index/user/registration}" method="post">
-        <div><label> User name : <input type="text" name="name"/> </label></div>
-        <div><label> User Email : <input type="text" name="email"/> </label></div>
-        <div><label> Password: <input type="password" name="password"/> </label></div>
+    <form th:action="@{/index/user/registration}" th:object="${user}" method="post">
+        <div><label> User name : <input type="text" th:field="*{name}"/> </label></div>
+        <div><label> User Email : <input type="text" th:field="*{email}"/> </label></div>
+        <div><label> Password: <input type="password" th:field="*{password}"/> </label></div>
         <div><input type="submit" value="Sign In"/></div>
     </form>
 </div>
+<link rel="stylesheet" th:href="@{/styles/logReg.css}">
 </body>
 </html>

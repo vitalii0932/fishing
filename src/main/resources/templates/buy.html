@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://kit.fontawesome.com/c93819fc22.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" th:href="@{/styles/buy.css}">
     <title>Оформлення замовлення</title>
 </head>
 <body>
@@ -18,6 +17,10 @@
     </a>
 </header>
 <div class="container">
+    <div th:if="${message}">
+        <div th:each="line : ${message.split('\n')}" class="error-message" th:text="${line}"></div>
+    </div>
+
     <form th:action="@{/index/buy}" method="post">
         <label> ПІБ: <input type="text" name="name" placeholder="Ваше ім'я"/> </label>
         <label> Електронна пошта: <input type="text" name="email" placeholder="example@gmail.com"/> </label>
@@ -32,5 +35,6 @@
     </form>
 </div>
 
+<link rel="stylesheet" th:href="@{/styles/buy.css}">
 </body>
 </html>

@@ -6,10 +6,13 @@ import com.example.ookp.model.Product;
 import com.example.ookp.model.ShoppingCart;
 import com.example.ookp.model.User;
 import com.example.ookp.service.*;
+import jakarta.validation.Valid;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -33,7 +36,9 @@ public class MainController {
 
     @ModelAttribute("shoppingCart")
     public ShoppingCart createShoppingCart() {
-        return new ShoppingCart();
+        var shoppingCart = new ShoppingCart();
+        shoppingCart.setTotalPrice(0.0);
+        return shoppingCart;
     }
 
     @ModelAttribute("user")
@@ -114,20 +119,42 @@ public class MainController {
     }
 
     @PostMapping("/index/buy")
-    public String buy(UserDTO userDTO, Model model, @ModelAttribute("shoppingCart") ShoppingCart shoppingCart) {
-        shoppingCart = userService.buyProducts(userDTO, shoppingCart);
+    public String buy(@Valid User user, Errors errors, Model model, @ModelAttribute("shoppingCart") ShoppingCart shoppingCart) {
+        if(errors.hasErrors()) {
+            var stringError = "";
+            System.out.println(errors.getErrorCount());
+            for(var error : errors.getFieldErrors()) {
+                stringError +=  "\n" + error.getDefaultMessage();
+            }
+            model.addAttribute("message", stringError);
+            return "buy";
+        }
+
+        var shoppingCartTemp = userService.buyProducts(user, shoppingCart);
+        shoppingCart.setId(shoppingCartTemp.getId());
+        shoppingCart.setProducts(shoppingCartTemp.getProducts());
+        shoppingCart.setTotalPrice(shoppingCartTemp.getTotalPrice());
         return main(model, shoppingCart);
     }
 
     @GetMapping("/index/registration")
-    public String registration(Model model, @ModelAttribute("user") User user) {
+    public String registration(Model model) {
         return "registration";
     }
 
     @PostMapping("/index/user/registration")
-    public String registration(Model model, UserDTO userDTO, @ModelAttribute("shoppingCart") ShoppingCart shoppingCart, @ModelAttribute("user") User user) {
-        System.out.println(userDTO);
-        user = userService.registerUser(userDTO, shoppingCart);
+    public String registration(Model model, @Valid User user, Errors errors, @ModelAttribute("shoppingCart") ShoppingCart shoppingCart) {
+        if(errors.hasErrors()) {
+            var stringError = "";
+            System.out.println(errors.getErrorCount());
+            for(var error : errors.getFieldErrors()) {
+                stringError +=  "\n" + error.getDefaultMessage();
+            }
+            model.addAttribute("message", stringError);
+            return "registration";
+        }
+
+        userService.registerUser(user, shoppingCart);
         return main(model, shoppingCart);
     }
 

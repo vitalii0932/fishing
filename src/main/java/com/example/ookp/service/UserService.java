@@ -103,20 +103,19 @@ public class UserService {
 
     @Transactional(isolation = Isolation.REPEATABLE_READ)
     @Retryable(maxAttempts = 5)
-    public ShoppingCart buyProducts(UserDTO userDTO, ShoppingCart shoppingCart) {
+    public ShoppingCart buyProducts(User user, ShoppingCart shoppingCart) {
         productService.buyProducts(shoppingCart.getProducts());
-        userDTO.setRoleId(1);
-        userDTO.setPost("Nova poshta " + userDTO.getPost());
+        user.setRole(roleService.findById(1));
+        user.setPost("Nova poshta " + user.getPost());
         var shoppingCartId = shoppingCartService.add(shoppingCart);
-        System.out.println(userRepository.findUserByEmail(userDTO.getEmail()));
-        var user = userRepository.findUserByEmail(userDTO.getEmail());
+        user = userRepository.findUserByEmail(user.getEmail());
         if(user == null) {
-            user = add(userDTO);
+            user = add(userMapper.toUserDTO(user));
         } else {
-            user.setCall(userDTO.isCall());
-            user.setTown(userDTO.getTown());
-            user.setPost(userDTO.getPost());
-            user.setPhoneNumber(userDTO.getPhoneNumber());
+            user.setCall(user.getCall());
+            user.setTown(user.getTown());
+            user.setPost(user.getPost());
+            user.setPhoneNumber(user.getPhoneNumber());
             user = userRepository.save(user);
         }
         orderService.createNew(user, shoppingCart);
@@ -126,10 +125,9 @@ public class UserService {
 
     @Transactional(isolation = Isolation.REPEATABLE_READ)
     @Retryable(maxAttempts = 5)
-    public User registerUser(UserDTO userDTO, ShoppingCart shoppingCart) {
+    public User registerUser(User user, ShoppingCart shoppingCart) {
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        var user = userMapper.toUser(userDTO);
-        user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRole(roleService.findById(2));
         shoppingCart = shoppingCartService.findById(shoppingCartService.add(shoppingCart));
         user.setShoppingCart(shoppingCart);

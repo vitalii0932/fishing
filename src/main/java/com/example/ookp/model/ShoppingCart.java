@@ -4,14 +4,16 @@ import jakarta.persistence.*;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Entity(name = "shopping_cart")
 @Component
 @Data
 public class ShoppingCart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
     private int[] products;
     @Column(name = "total_price")
-    private double totalPrice;
+    private Double totalPrice;
 }

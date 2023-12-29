@@ -91,7 +91,7 @@ public class ShoppingCartService {
             int length = shoppingCart.getProducts().length;
             if(length == 1) {
                 shoppingCart.setProducts(null);
-                shoppingCart.setTotalPrice(0);
+                shoppingCart.setTotalPrice(0.0);
             }
             List<Integer> listProducts = new ArrayList<>();
             for(int i = 0; i < length; i++) {
@@ -124,7 +124,7 @@ public class ShoppingCartService {
     public int create() {
         ShoppingCart shoppingCart = new ShoppingCart();
         shoppingCart.setProducts(new int[0]);
-        shoppingCart.setTotalPrice(0);
+        shoppingCart.setTotalPrice(0.0);
         return shoppingCartRepository.save(shoppingCart).getId();
     }
 

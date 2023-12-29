@@ -59,7 +59,7 @@ public class UserMapper {
         }
         userDTO.setTown(user.getTown());
         userDTO.setPost(user.getPost());
-        userDTO.setCall(user.isCall());
+        userDTO.setCall(user.getCall());
         return userDTO;
     }
 }
